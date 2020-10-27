@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { useEventListener } from "./hooks";
 
-function App() {
+
+export default function App() {
+  const [config, setConfig] = useState({
+    color: "red",
+    background: "yellow"
+  });
+
+  useEventListener("message", ({ data }) => {
+    setConfig(JSON.parse(data));
+    console.log("running");
+    window.parent.postMessage("updates taken care of", "*");
+  });
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Hello CodeSandbox</h1>
+      <div style={{ backgroundColor: config.background }}>
+        <h2 style={{ color: config.color }}>
+          Start editing to see some magic happen!
+        </h2>
+      </div>
     </div>
   );
 }
-
-export default App;
